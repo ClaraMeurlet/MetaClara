@@ -18,12 +18,14 @@ PAGE_ID = os.getenv("PAGE_ID")  # ID de votre page Facebook pour les posts
 if not all([VERIFY_TOKEN, PAGE_ACCESS_TOKEN, OPENAI_API_KEY, PAGE_ID]):
     raise ValueError("Assurez-vous que toutes les variables d'environnement sont définies : VERIFY_TOKEN, PAGE_ACCESS_TOKEN, OPENAI_API_KEY, PAGE_ID")
 
-# Ajouter une route pour la racine
+@app.route("/healthz", methods=["GET"])
+def health_check():
+    return "OK", 200
+
 @app.route("/", methods=["GET"])
 def home():
     return "Bienvenue sur le serveur Flask de Clara. Le serveur fonctionne correctement !"
 
-# Fonction pour valider les Webhooks
 @app.route("/webhook", methods=["GET", "POST"])
 def webhook():
     if request.method == "GET":
